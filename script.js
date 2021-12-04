@@ -72,10 +72,10 @@ function game() {
     let playerScore = 0;
     let computerScore = 0;
     let result = "";
+    let score;
     
     for(let round = 0; round < 5; round++) {
         result = playRound(playerPlay(), computerPlay())
-        console.log(result);
 
         switch (result.slice(0, result.indexOf("!") + 1)) {
             case "You win!":
@@ -90,14 +90,17 @@ function game() {
                 console.log("Error 0006");
         }
 
+        score = "Score: " + playerScore + "-" + computerScore + ".";
+        console.log(result + " " + score);
         console.log("\n");
     }
 
     if ((playerScore - computerScore) > 0) {
-        return "\nYou won the game! Score: " + playerScore + "-" + computerScore + ".";
+        console.log("\nYou won the game! " + score);
     } else if ((playerScore - computerScore) < 0) {
-        return "\nYou lost the game! Score: " + playerScore + "-" + computerScore + ".";
+        console.log("\nYou lost the game! " + score);
     } else {
-        return "\nYou tied with the computer! Score: " + playerScore + "-" + computerScore + ".";
+        console.log("\nYou tied with the computer! " + score);
     }
 }
+
