@@ -7,7 +7,7 @@ function computerPlay () {
         case 2:
             return "Scissors";
         default:
-            return "Error 0001";        
+            return "Error 0001";
     }
 }
 
@@ -16,43 +16,50 @@ function getRandomInt(max) {
 }
 
 function playerPlay () {
-    return window.prompt("You play: ");
+    let playerSelection = window.prompt("\nYou play: ").toLowerCase();
+
+    while (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors") {
+        playerSelection = window.prompt("Unacceptable input. Please choose from \"Rock\", \"Paper\", or \"Scissors\": ").toLowerCase();
+    }
+
+    return playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
 }
 
 function playRound (playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
+    console.log("You play: " + playerSelection);
+    console.log("Computer plays: " + computerSelection);
+    
     switch (playerSelection) {
         case "Rock":
             switch (computerSelection) {
                 case "Rock":
-                    return "It's a tie! Rock ties with Rock";
+                    return "It's a tie! Rock ties with Rock.";
                 case "Paper":
-                    return "You lose! Paper beats Rock";
+                    return "You lose! Paper beats Rock.";
                 case "Scissors":
-                    return "You win! Rock beats Scissors";
+                    return "You win! Rock beats Scissors.";
                 default:
                     return "Error 0003";
             }
         case "Paper":
             switch (computerSelection) {
                 case "Rock":
-                    return "You win! Paper beats Rock";
+                    return "You win! Paper beats Rock.";
                 case "Paper":
-                    return "It's a tie! Paper ties with Paper";
+                    return "It's a tie! Paper ties with Paper.";
                 case "Scissors":
-                    return "You lose! Scissors beats Paper";
+                    return "You lose! Scissors beats Paper.";
                 default:
                     return "Error 0004";
             }
         case "Scissors":
             switch (computerSelection) {
                 case "Rock":
-                    return "You lose! Rock beats Scissors";
+                    return "You lose! Rock beats Scissors.";
                 case "Paper":
-                    return "You win! Scissors beat Paper";
+                    return "You win! Scissors beat Paper.";
                 case "Scissors":
-                    return "It's a tie! Scissors tie with Scissors";
+                    return "It's a tie! Scissors tie with Scissors.";
                 default:
                     return "Error 0005";
             }
@@ -68,24 +75,29 @@ function game() {
     
     for(let round = 0; round < 5; round++) {
         result = playRound(playerPlay(), computerPlay())
-        result = result.slice(0, result.indexOf("!") + 1);
+        console.log(result);
 
-        switch (result) {
+        switch (result.slice(0, result.indexOf("!") + 1)) {
             case "You win!":
                 playerScore++;
+                break;
             case "You lose!":
                 computerScore++;
+                break;
+            case "It's a tie!":
+                break;
             default:
                 console.log("Error 0006");
-                break;            
         }
+
+        console.log("\n");
     }
 
     if ((playerScore - computerScore) > 0) {
-        return "You won the game!";
+        return "\nYou won the game! Score: " + playerScore + "-" + computerScore + ".";
     } else if ((playerScore - computerScore) < 0) {
-        return "You lost the game!";
+        return "\nYou lost the game! Score: " + playerScore + "-" + computerScore + ".";
     } else {
-        return "You tied with the computer!";
+        return "\nYou tied with the computer! Score: " + playerScore + "-" + computerScore + ".";
     }
 }
