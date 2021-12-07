@@ -2,69 +2,78 @@ const buttonRock = document.querySelector("#rock");
 const buttonPaper = document.querySelector("#paper");
 const buttonScissors = document.querySelector("#scissors");
 const buttonPlayAgain = document.querySelector("#playAgain");
-
+const playerSelectionImage = document.querySelector("#playerSelectionImage")
+const computerSelectionImage = document.querySelector("#computerSelectionImage")
 const score = document.querySelector("#score");
-const roundResult = document.querySelector("#roundResult");
 const gameResult = document.querySelector("#gameResult");
-
+const selections = ["./images/rock.png", "./images/paper.png", "./images/scissors.png"];
 let playerScore = 0;
 let computerScore = 0;
+buttonPlayAgain.disabled = true;
+buttonPlayAgain.style.visibility = "hidden";
 
 buttonRock.addEventListener("click", () => {playRound(0)});
 buttonPaper.addEventListener("click", () => {playRound(1)});
 buttonScissors.addEventListener("click", () => {playRound(2)});
+buttonPlayAgain.addEventListener("click", () => {resetGameState()});
 
-buttonPlayAgain.style.visibility = "hidden";
-buttonPlayAgain.addEventListener("click", () => {
+
+function resetGameState() {
     playerScore = 0;
     computerScore = 0;
-    roundResult.textContent = "";
     gameResult.textContent = "";
     score.textContent = "0-0";
-    buttonPlayAgain.style.visibility = "hidden";
     buttonRock.disabled = false;
     buttonPaper.disabled = false;
     buttonScissors.disabled = false;
-});
+    buttonPlayAgain.disabled = true;
+    buttonPlayAgain.style.visibility = "hidden";
+    playerSelectionImage.src = "";
+    computerSelectionImage.src = "";
+}
 
-
-function computerPlay () {
+function getRandomInt() {
     return Math.floor(Math.random() * 3);
 }
 
-function playRound (playerSelection) {
-    let computerSelection = computerPlay();
-
+function computeResult(playerSelection, computerSelection) {
     if (playerSelection === computerSelection) {
-        roundResult.textContent = "It's a tie.";
         score.textContent = playerScore + "-" + computerScore;
     } else if ((playerSelection === 0 && computerSelection === 2) ||
                (playerSelection === 1 && computerSelection === 0) ||
                (playerSelection === 2 && computerSelection === 1)) {
         playerScore++;
-        roundResult.textContent = "You won!";
         score.textContent = playerScore + "-" + computerScore;
     } else {
         computerScore++;
-        roundResult.textContent = "You lost...";
         score.textContent = playerScore + "-" + computerScore;
     }
+}
 
-    if (playerScore >= 5 || computerScore >= 5) {
-        if (playerScore >= 5) {
-            gameResult.textContent = "You won the game!";
-        } else if (computerScore >= 5) {
-            gameResult.textContent = "You lost the game!";
-        }
-
-        buttonRock.disabled = true;
-        buttonPaper.disabled = true;
-        buttonScissors.disabled = true;
-
-        buttonPlayAgain.style.visibility = "visible";
-
-
+function gameOver() {
+    if (playerScore >= 5) {
+        gameResult.textContent = "You Won!";
+    } else if (computerScore >= 5) {
+        gameResult.textContent = "You Lost...";
     }
-    
+
+    buttonRock.disabled = true;
+    buttonPaper.disabled = true;
+    buttonScissors.disabled = true;
+
+    buttonPlayAgain.disabled = false;
+    buttonPlayAgain.style.visibility = "visible";
+}
+
+function playRound(playerSelection) {
+    let computerSelection = getRandomInt();
+    setSelectionImages(playerSelection, computerSelection);
+    computeResult(playerSelection, computerSelection);
+    if (playerScore >= 5 || computerScore >= 5) gameOver();
+}
+
+function setSelectionImages(playerSelection, computerSelection) {
+    playerSelectionImage.src = selections[playerSelection];
+    computerSelectionImage.src = selections[computerSelection];
 }
 
